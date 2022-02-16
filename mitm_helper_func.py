@@ -17,7 +17,7 @@ def get_mac(IP):
 	else:
 		print(f"Waiting for MAC of {IP} ...")
 		time.sleep(1)
-		get_mac(IP)
+		return get_mac(IP)
 
 def get_ip(network, MAC):
 	clients_list = scan(network)
