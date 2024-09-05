@@ -26,7 +26,11 @@ def scan(IP):
 	ans_list = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=IP), timeout=1, verbose=False)[0]
 	clients_list = []
 	for QueryAnswer in ans_list:
-		# psrc for packet source and hwsrc for MAC Address source
+		"""
+		psrc for packet source and hwsrc for MAC Address source.
+		QueryAnswer has both query and answer.
+		QueryAnswer[1] because index 0 is our query and index 1 is the answer.
+		"""
 		client_dict = {'IP' : QueryAnswer[1].psrc, 'MAC' : QueryAnswer[1].hwsrc}
 		clients_list.append(client_dict)
 	return clients_list
