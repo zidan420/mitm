@@ -19,7 +19,9 @@ def scan(IP):
 
 	dst represents destination and pdst represents packet destination.
 	verbose=False to prevent scapy from displaying detailed information.
-	timeout=1 means we will 1 second for a reply from broadcast
+	timeout=1 means we will wait 1 second for a reply from broadcast.
+
+  	srp() returns answered and unanswered list. srp()[0] for accessing answered list only
 	"""
 	ans_list = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=IP), timeout=1, verbose=False)[0]
 	clients_list = []
