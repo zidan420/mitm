@@ -1,10 +1,30 @@
+# star(*) means we want to import import everything from scapy.all library
 from scapy.all import *
 from scapy.layers import http
+"""
+Scapy is about manipulating networking packets. 
+You must have a bit of knowlege about OSI Model and TCP/IP Model to be able to use scapy at its full potential.
+"""
 
+# To check if the target IP is live or not. If IP is up, prints the MAC Address
 def scan(IP):
+	""" 
+	Create a source packet with srp(). We use '/' for stacking different Layers of OSI Model.
+	In this case, we are stacking (Ether from) Data Link Layer and (ARP from) Network Layer.
+	Then we send the packet to broadbast ip address(ff:ff:ff:ff:ff:ff) through Ether(net).
+	We stack the ARP Packet to get the MAC Address of the target IP Address.
+	The broadcast IP address then asks EVERY SINGLE DEVICE with ARP packet, "Who Has the target IP Address?".
+	The one with target IP address replies with ARP packet saying "I have the target IP Address 
+	 and my MAC address is this." The broadcast IP address then gives us the MAC of the target.
+
+	dst represents destination and pdst represents packet destination.
+	verbose=False to prevent scapy from displaying detailed information.
+	timeout=1 means we will 1 second for a reply from broadcast
+	"""
 	ans_list = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=IP), timeout=1, verbose=False)[0]
 	clients_list = []
 	for QueryAnswer in ans_list:
+		# psrc for packet source and hwsrc for MAC Address source
 		client_dict = {'IP' : QueryAnswer[1].psrc, 'MAC' : QueryAnswer[1].hwsrc}
 		clients_list.append(client_dict)
 	return clients_list
