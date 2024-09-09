@@ -12,6 +12,11 @@ def process_sniffed_packet(pkt):
 			print("[*] Username and Password Found ==> " + login_info.decode())
 
 def sniff_packet(interface):
+	"""
+	prn=process_sniffed_packet is a callback function. We arenot passing pkt directly,
+	but scapy still gets the packet each time the function is called.
+	store=False because we don't want to store the packets in memory.
+	"""
 	sniff(iface=interface, store=False, prn=process_sniffed_packet)
 
 def main():
@@ -20,6 +25,10 @@ def main():
 	args = parser.parse_args()
 	interface = args.interface
 
+	"""
+	interface is usually wlan0 in case of wifi anf eth0 in case of ethernet or similar.
+	Again, use "ifconfig" to know the interface
+	"""
 	sniff_packet(interface)
 
 if __name__ == '__main__':
